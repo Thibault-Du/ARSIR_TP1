@@ -113,13 +113,7 @@ public class Client {
             if (socket != null && !socket.isClosed()) {
                 socket.close();
             }
-        }
-    }
-
-
-
-
-
+        }}
     public static void main(String[] args) {
         try {
             String serverAddress = "10.42.135.71"; // Mettez l'adresse IP du serveur ici

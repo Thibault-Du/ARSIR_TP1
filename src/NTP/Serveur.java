@@ -52,9 +52,6 @@ public class Serveur {
         }
     }
 
-
-
-
     public static void main(String[] args) {
         try {
             int port = 6789; // Mettez le port du serveur ici
