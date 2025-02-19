@@ -2,6 +2,7 @@ package UDP;
 
 import java.io.IOException;
 import java.net.*;
+import java.time.LocalTime;
 import java.util.Enumeration;
 import java.util.Scanner;
 
@@ -24,6 +25,15 @@ public class Client {
 
     public void sendMessage(String message, InetAddress address, int port) {
         try {
+            LocalTime heureActuelle = LocalTime.now();
+
+
+            System.out.println("L'heure actuelle est : " + heureActuelle);
+
+
+            LocalTime heureStockee = heureActuelle;
+
+            System.out.println("L'heure stockée est : " + heureStockee);
             byte[] msgBytes = message.getBytes();
             DatagramPacket packet = new DatagramPacket(msgBytes, msgBytes.length, address, port);
             socket.send(packet);
@@ -89,7 +99,7 @@ public class Client {
                 System.out.println("Entrez l'adresse IP du destinataire (ou 'all' pour envoyer à tous) : ");
                 String destAddress = scanner.nextLine();
                 if (destAddress.equalsIgnoreCase("all")) {
-                    
+
                     sendMessage(message, serverAddress, serverPort);
                 } else {
                     System.out.println("Entrez le port du destinataire : ");
