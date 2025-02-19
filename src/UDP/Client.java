@@ -137,21 +137,5 @@ public class Client {
             e.printStackTrace();
         }
     }
-    public static void main1(String[] args) {
-        try {
-            String serverAddress = "10.42.135.71"; // Mettez l'adresse IP du serveur ici
-            int serverPort = 6789; // Mettez le port du serveur ici
-            int clientPort = 6790; // Mettez le port du client ici
-            InetAddress[] clientAddresses = {
-                    InetAddress.getByName("192.168.0.101"),
-                    InetAddress.getByName("192.168.0.103")
-            }; // Adresses IP des autres clients
-            int[] clientPorts = {6791, 6792}; // Ports des autres clients
 
-            Client client = new Client(serverAddress, serverPort, clientPort, clientAddresses, clientPorts);
-            client.start();
-        } catch (SocketException | UnknownHostException e) {
-            e.printStackTrace();
-        }
-    }
 }
