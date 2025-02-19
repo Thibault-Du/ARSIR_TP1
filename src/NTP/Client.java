@@ -43,10 +43,11 @@ public class Client {
                 byte[] buffer = new byte[1024];
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                 socket.receive(packet);
-                long heureActuelle = System.currentTimeMillis();
+                long heureReceive = System.currentTimeMillis();
 
                 String receivedMessage = new String(packet.getData(), 0, packet.getLength());
-                System.out.println("Message reçu de  " + packet.getAddress().getHostAddress() + ":" + packet.getPort() + " - " + receivedMessage + heureActuelle);
+                System.out.println("Message reçu de " + packet.getAddress().getHostAddress() + ":" + packet.getPort() + " - "
+                        + receivedMessage);
 
             }
         } catch (IOException e) {
