@@ -10,16 +10,12 @@ public class Client {
     private DatagramSocket socket;
     private InetAddress serverAddress;
     private int serverPort;
-    private InetAddress[] clientAddresses;
-    private int[] clientPorts;
     InetAddress localHost = getLocalIpAddress();
 
-    public Client(String serverAddress, int serverPort, int clientPort, InetAddress[] clientAddresses, int[] clientPorts) throws SocketException, UnknownHostException {
+    public Client(String serverAddress, int serverPort, int clientPort) throws SocketException, UnknownHostException {
         this.socket = new DatagramSocket(clientPort);
         this.serverAddress = InetAddress.getByName(serverAddress);
         this.serverPort = serverPort;
-        this.clientAddresses = clientAddresses;
-        this.clientPorts = clientPorts;
     }
 
     public void sendMessage(String message, InetAddress address, int port) {
@@ -109,36 +105,13 @@ public class Client {
 
 
 
-
     public static void main(String[] args) {
         try {
-            String serverAddress = "10.42.135.71"; // Mettez l'adresse IP du serveur ici
+            String serverAddress = "192.168.56.1"; // Mettez l'adresse IP du serveur ici
             int serverPort = 6789; // Mettez le port du serveur ici
             int clientPort = 6790; // Mettez le port du client ici
-            InetAddress[] clientAddresses = {
-                    InetAddress.getByName("192.168.0.101"),
-                    InetAddress.getByName("192.168.0.103")
-            }; // Adresses IP des autres clients
-            int[] clientPorts = {6791, 6792}; // Ports des autres clients
 
-            Client client = new Client(serverAddress, serverPort, clientPort, clientAddresses, clientPorts);
-            client.start();
-        } catch (SocketException | UnknownHostException e) {
-            e.printStackTrace();
-        }
-    }
-    public static void main1(String[] args) {
-        try {
-            String serverAddress = "10.42.135.71"; // Mettez l'adresse IP du serveur ici
-            int serverPort = 6789; // Mettez le port du serveur ici
-            int clientPort = 6790; // Mettez le port du client ici
-            InetAddress[] clientAddresses = {
-                    InetAddress.getByName("192.168.0.101"),
-                    InetAddress.getByName("192.168.0.103")
-            }; // Adresses IP des autres clients
-            int[] clientPorts = {6791, 6792}; // Ports des autres clients
-
-            Client client = new Client(serverAddress, serverPort, clientPort, clientAddresses, clientPorts);
+            Client client = new Client(serverAddress, serverPort, clientPort);
             client.start();
         } catch (SocketException | UnknownHostException e) {
             e.printStackTrace();
