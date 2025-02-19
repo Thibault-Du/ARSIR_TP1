@@ -1,40 +1,68 @@
-package UDP;
-
 import java.io.IOException;
 import java.net.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.ArrayList;
+import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Serveur {
 
-    private int cpt;
 
-    public static void main(String[] args) {
-        try{
-            int port = 12345;
-            DatagramSocket listener = new DatagramSocket(port);
-            ThreadPoolExecutor pool = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
 
-            while(true){
-                byte[] buf1 = new byte[1024];
-                DatagramPacket packet1 = new DatagramPacket(buf1, buf1.length);
-                byte[] buf2 = new byte[1024];
-                DatagramPacket packet2 = new DatagramPacket(buf2, buf2.length);
+    private DatagramSocket socket;
+    private List<String> messageHistory;
 
-                listener.receive(packet1);
-                listener.receive(packet2);
-                pool.execute(new Communication(packet1, packet2));
+    public Serveur(int port) throws SocketException {
+        socket = new DatagramSocket(port);
+        messageHistory = new ArrayList<>();
+    }
 
+    public void start() {
+        try {
+            // Obtenir et afficher l'adresse IP du serveur
+            InetAddress localHost = InetAddress.getLocalHost();
+            System.out.println("Serveur démarré...");
+            System.out.println("Adresse IP du serveur : " + localHost.getHostAddress());
+
+            byte[] buffer = new byte[1024];
+            while (true) {
+                DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+                socket.receive(packet);
+
+                String receivedMessage = new String(packet.getData(), 0, packet.getLength());
+                InetAddress clientAddress = packet.getAddress();
+                int clientPort = packet.getPort();
+
+
+                LocalDateTime currentTime = LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                String formattedCurrentTime = currentTime.format(formatter);
+
+
+                String heuremessage = "L'heure actuelle est : " + formattedCurrentTime;
+                byte[] confirmationBytes = heuremessage.getBytes();
+                DatagramPacket confirmationPacket = new DatagramPacket(confirmationBytes, confirmationBytes.length, clientAddress, clientPort);
+                socket.send(confirmationPacket);
             }
-
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (SocketException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (socket != null && !socket.isClosed()) {
+                socket.close();
+            }
         }
+    }
 
 
+
+
+    public static void main(String[] args) {
+        try {
+            int port = 6789; // Mettez le port du serveur ici
+            Serveur serveur = new Serveur(port);
+            serveur.start();
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
     }
 }
