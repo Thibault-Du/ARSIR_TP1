@@ -26,10 +26,10 @@ public class Client {
             byte[] msgBytes = message.getBytes();
             byte[] timeBytes = Long.toString(heureActuelle).getBytes(StandardCharsets.UTF_8);
 
-            DatagramPacket packet = new DatagramPacket(timeBytes, msgBytes.length, address, port);
+            DatagramPacket packet = new DatagramPacket(timeBytes, timeBytes.length, address, port);
             socket.send(packet);
             // Envoyer une copie du message au serveur
-            DatagramPacket serverPacket = new DatagramPacket(timeBytes, msgBytes.length, serverAddress, serverPort);
+            DatagramPacket serverPacket = new DatagramPacket(timeBytes, timeBytes.length, serverAddress, serverPort);
             socket.send(serverPacket);
 
         } catch (IOException e) {
@@ -43,10 +43,9 @@ public class Client {
                 byte[] buffer = new byte[1024];
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                 socket.receive(packet);
-                long heureActuelle = System.currentTimeMillis();
 
                 String receivedMessage = new String(packet.getData(), 0, packet.getLength());
-                System.out.println("Message reçu de  " + packet.getAddress().getHostAddress() + ":" + packet.getPort() + " - " + receivedMessage + heureActuelle);
+                System.out.println("Message reçu de  " + packet.getAddress().getHostAddress() + ":" + packet.getPort() + " - " + receivedMessage );
 
             }
         } catch (IOException e) {
