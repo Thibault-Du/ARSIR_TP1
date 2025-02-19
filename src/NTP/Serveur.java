@@ -33,19 +33,14 @@ public class Serveur {
             while (true) {
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                 socket.receive(packet);
-
-                String receivedMessage = new String(packet.getData(), 0, packet.getLength());
+                long receiveTime = System.currentTimeMillis();
                 InetAddress clientAddress = packet.getAddress();
                 int clientPort = packet.getPort();
+                long clientTime = Long.parseLong(new String(packet.getData(), 0, packet.getLength()));
 
 
-                LocalDateTime currentTime = LocalDateTime.now();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                String formattedCurrentTime = currentTime.format(formatter);
-
-
-                String heuremessage = "L'heure actuelle est : " + formattedCurrentTime;
-                byte[] confirmationBytes = heuremessage.getBytes();
+                String message = clientTime+":"+receiveTime+":"+System.currentTimeMillis();
+                byte[] confirmationBytes = message.getBytes();
                 DatagramPacket confirmationPacket = new DatagramPacket(confirmationBytes, confirmationBytes.length, clientAddress, clientPort);
                 socket.send(confirmationPacket);
             }
