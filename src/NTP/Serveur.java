@@ -39,7 +39,7 @@ public class Serveur {
                 long clientTime = Long.parseLong(new String(packet.getData(), 0, packet.getLength()));
 
 
-                String message = clientTime+":"+receiveTime+":"+System.currentTimeMillis();
+                String message = clientTime+":"+receiveTime+":"+System.currentTimeMillis()+":";
                 byte[] confirmationBytes = message.getBytes();
                 DatagramPacket confirmationPacket = new DatagramPacket(confirmationBytes, confirmationBytes.length, clientAddress, clientPort);
                 socket.send(confirmationPacket);
